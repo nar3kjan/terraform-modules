@@ -7,29 +7,24 @@ data "aws_ami" "latest_packer_image" {
   }
 }
 
-module "asg" {
-  source  = "terraform-aws-modules/autoscaling/aws"
+module "ec2_instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 3.0"
 
-  # Autoscaling group
-  name = "Development-asg"
+  for_each = toset(["one", "two"])
 
-  min_size                  = 0
-  max_size                  = 4
-  desired_capacity          = 2
-  wait_for_capacity_timeout = 0
-  health_check_type         = "EC2"
-  vpc_zone_identifier       = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
+  name = "instance-${each.key}"
 
+  ami                    = data.aws_ami.latest_packer_image.id
+  instance_type          = "t2.micro"
+  key_name               = "user1"
+  monitoring             = true
+  vpc_security_group_ids = [aws_security_group.dev_sg.id]
+  subnet_id              = element(module.vpc.public_subnets, count.index) 
 
-  
-  # Launch template
-  launch_template_name        = "Development-asg"
-  launch_template_description = "Ubuntu_Nginx"
-  update_default_version      = true
-
-  image_id          = data.aws_ami.latest_packer_image.id
-  instance_type     = "t2.micro"
-  ebs_optimized     = true
-  enable_monitoring = true
-
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
 }
+
