@@ -29,9 +29,6 @@ module "zones" {
       }
     }
 
-    "myapp.com" = {
-      comment = "myapp.com"
-    }
   }
 
   tags = {
