@@ -55,7 +55,7 @@ module "asg" {
 
   image_id          = data.aws_ami.latest_packer_image.id
   instance_type     = "t2.micro"
-  ebs_optimized     = true
+  ebs_optimized     = false
   enable_monitoring = true
 
 }
