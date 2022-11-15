@@ -14,9 +14,9 @@ module "asg" {
   name = "Development-asg"
 
   min_size                  = 2
-  max_size                  = 4
+  max_size                  = 2
   desired_capacity          = 2
-  wait_for_capacity_timeout = 2
+  wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
   vpc_zone_identifier       = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
   target_group_arns = module.alb.target_group_arns
