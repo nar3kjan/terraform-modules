@@ -35,19 +35,18 @@ module "records" {
       name    = ""
       type    = "A"
       alias   = {
-        name    = "www.nar3kjan.link"
-        zone_id = data.aws_route53_zone.my_zone.id
-      }
-    },
-
-    {
-      name    = "www"
-      type    = "A"
-      alias   = {
         name    = module.alb.lb_dns_name
         zone_id = module.alb.lb_zone_id
       }
-    }
+    },
+    {
+      name    = "www"
+      type    = "A"
+      ttl     = 3600
+      records = [
+        "10.10.10.10",
+      ]
+    },
   ]
 
 }
