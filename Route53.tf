@@ -3,7 +3,7 @@ module "acm" {
   version = "~> 4.0"
 
   domain_name  = "nar3kjan.link"
-  zone_id      = module.zones.route53_zone_zone_id[0]
+  zone_id      = keys(module.zones.route53_zone_zone_id)[0]
 
   subject_alternative_names = [
     "*.nar3kjan.link",
