@@ -13,9 +13,10 @@ module "asg" {
   # Autoscaling group
   name = "Development-asg"
 
-  min_size                  = 2
+  min_size                  = 0
   max_size                  = 4
   desired_capacity          = 2
+  wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
   vpc_zone_identifier       = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
 
