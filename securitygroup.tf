@@ -1,7 +1,7 @@
 resource "aws_security_group" "dev_sg" {
   name        = "Development SG"
   description = "Development SG"
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.vpc.vpc_id
   dynamic "ingress" {
     for_each = ["80", "443", "22", "8080"]
     content {
