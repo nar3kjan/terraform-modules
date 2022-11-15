@@ -20,7 +20,7 @@ module "ec2_instance" {
   key_name               = "user1"
   monitoring             = true
   vpc_security_group_ids = [aws_security_group.dev_sg.id]
-  subnet_id              = element(module.vpc.public_subnets, count.index) 
+  subnet_id              = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]] 
 
   tags = {
     Terraform   = "true"
