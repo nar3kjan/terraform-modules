@@ -14,17 +14,13 @@ module "alb" {
 
   target_groups = [
     {
-      name_prefix      = "Public1"
+      name_prefix      = "Public"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
       targets = {
         my_target = {
-          target_id = module.ec2_instance.id[0]
-          port = 80
-        }
-        my_other_target = {
-          target_id = module.ec2_instance.id[1]
+          target_id = module.asg.autoscaling_group_id
           port = 80
         }
       }
