@@ -32,7 +32,7 @@ module "records" {
 
   records = [
     {
-      name    = "*"
+      name    = ""
       type    = "A"
       alias   = {
         name    = module.alb.lb_dns_name
@@ -40,15 +40,14 @@ module "records" {
       }
     },
 
-
     {
-      name    = ""
+      name    = "www"
       type    = "A"
-      ttl     = 3600
-      records = [
-        "10.10.10.10",
-      ]
-    },
+      alias   = {
+        name    = module.alb.lb_dns_name
+        zone_id = module.alb.lb_zone_id
+      }
+    }
   ]
 
 }
