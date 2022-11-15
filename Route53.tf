@@ -48,14 +48,7 @@ module "records" {
         zone_id = module.alb.lb_zone_id
       }
     },
-    {
-      name    = ""
-      type    = "A"
-      ttl     = 3600
-      records = [
-        "10.10.10.10",
-      ]
-    },
+
   ]
 
 }
