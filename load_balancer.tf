@@ -20,7 +20,7 @@ module "alb" {
       target_type      = "instance"
       targets = {
         my_target = {
-          target_id = module.asg.autoscaling_group_id
+          target_id = module.asg.autoscaling_group_arn
           port = 80
         }
       }
