@@ -16,7 +16,7 @@ module "alb" {
 
   target_groups = [
     {
-      name_prefix      = "Public-ASG"
+      name_prefix      = "Public"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
