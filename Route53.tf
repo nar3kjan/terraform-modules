@@ -39,6 +39,15 @@ module "records" {
         zone_id = module.alb.lb_zone_id
       }
     },
+
+    {
+      name    = ""
+      type    = "A"
+      alias   = {
+        name    = module.alb.lb_dns_name
+        zone_id = module.alb.lb_zone_id
+      }
+    },
     {
       name    = ""
       type    = "A"
