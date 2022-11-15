@@ -40,15 +40,15 @@ module "records" {
       }
     },
 
+
     {
       name    = ""
       type    = "A"
-      alias   = {
-        name    = module.alb.lb_dns_name
-        zone_id = module.alb.lb_zone_id
-      }
+      ttl     = 3600
+      records = [
+        "10.10.10.10",
+      ]
     },
-
   ]
 
 }
