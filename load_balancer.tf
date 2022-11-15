@@ -12,6 +12,16 @@ module "alb" {
 
 
 
+  target_groups = [
+    {
+      name_prefix      = "Public"
+      backend_protocol = "HTTP"
+      backend_port     = 80
+      target_type      = "instance"
+      vpc_id = module.vpc.vpc_id
+    }
+  ]
+
   https_listeners = [
     {
       port               = 443
