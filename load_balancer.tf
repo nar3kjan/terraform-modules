@@ -22,11 +22,11 @@ module "alb" {
       target_type      = "instance"
       targets = {
         my_target = {
-          target_id = module.asg
+          target_id = module.asg.autoscaling_group_id
           port = 80
         }
         my_other_target = {
-          target_id = module.asg
+          target_id = module.asg.autoscaling_group_id
           port = 8080
         }
       }
