@@ -20,7 +20,7 @@ module "asg" {
   health_check_type         = "EC2"
   vpc_zone_identifier       = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
   target_group_arns = module.alb.target_group_arns
-/*
+
    initial_lifecycle_hooks = [
     {
       name                  = "ExampleStartupLifeCycleHook"
@@ -48,7 +48,7 @@ module "asg" {
     }
     triggers = ["tag"]
   }
-  */
+  
   # Launch template
   launch_template_name        = "Development-asg"
   launch_template_description = "Ubuntu_Nginx"
