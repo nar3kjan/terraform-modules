@@ -40,7 +40,7 @@ module "records" {
       }
     },
     {
-      name    = "www"
+      name    = "nar3kjan.link"
       type    = "A"
       ttl     = 3600
       records = [
