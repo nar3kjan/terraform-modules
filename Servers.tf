@@ -17,7 +17,7 @@ module "asg" {
   max_size                  = 2
   desired_capacity          = 2
   health_check_type         = "EC2"
-  vpc_zone_identifier       = [module.vpc.public_subnet[0].id, module.vpc.public_subnet[1].id]
+  vpc_zone_identifier       = [module.vpc.output.public_subnets[0], module.vpc.output.public_subnets[1]]
   target_group_arns = [module.alb.target_group_arns]
 
   

@@ -7,7 +7,7 @@ module "alb" {
   load_balancer_type = "application"
 
   vpc_id             = module.vpc.vpc_id
-  subnets            = [module.vpc.public_subnet[0].id, module.vpc.public_subnet[1].id]
+  subnets            = [module.vpc.output.public_subnets[0], module.vpc.output.public_subnets[1]]
   security_groups    = [aws_security_group.dev_sg.id]
 
   access_logs = {
@@ -22,11 +22,11 @@ module "alb" {
       target_type      = "instance"
       targets = {
         my_target = {
-          target_id = module.asg.autoscaling_group_id
+          target_id = module.asg.output.autoscaling_group_id
           port = 80
         }
         my_other_target = {
-          target_id = module.asg.autoscaling_group_id
+          target_id = module.asg.output.autoscaling_group_id
           port = 8080
         }
       }
