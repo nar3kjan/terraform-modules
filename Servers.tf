@@ -52,7 +52,7 @@ module "asg" {
   launch_template_name        = "Development-asg"
   launch_template_description = "Ubuntu_Nginx"
   update_default_version      = true
-  security_groups = aws_security_group.dev_sg.id
+  security_groups = [aws_security_group.dev_sg.id]
 
   image_id          = data.aws_ami.latest_packer_image.id
   instance_type     = "t2.micro"
