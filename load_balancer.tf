@@ -10,9 +10,7 @@ module "alb" {
   subnets            = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
   security_groups    = [aws_security_group.dev_sg.id]
 
-  access_logs = {
-    bucket = "my-alb-logs"
-  }
+
 
   target_groups = [
     {
