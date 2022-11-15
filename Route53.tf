@@ -29,6 +29,9 @@ module "zones" {
       }
     }
 
+    "nar3kjan.link" = {
+      comment = "nar3kjan.link"
+    }
   }
 
   tags = {
