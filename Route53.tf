@@ -2,62 +2,50 @@ data "aws_route53_zone" "my_zone" {
   name         = "nar3kjan.link"
   private_zone = false
 }
-#-----------------------------------------------------------------------------------------------
-resource "aws_acm_certificate" "cert" {
-  domain_name       = "nar3kjan.link"
-  subject_alternative_names = ["www.nar3kjan.link"]
-  validation_method = "DNS"
-}
 
 
+module "acm" {
+  source  = "terraform-aws-modules/acm/aws"
+  version = "~> 4.0"
 
-resource "aws_route53_record" "my_record" {
-  for_each = {
-    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
+  domain_name  = "nar3kjan.link"
+  zone_id      = data.aws_route53_zone.my_zone.id
 
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 60
-  type            = each.value.type
-  zone_id         = data.aws_route53_zone.my_zone.zone_id
-}
+  subject_alternative_names = [
+    "*.nar3kjan.link",
+    "app.sub.nar3kjan.link",
+  ]
 
+  wait_for_validation = true
 
-
-resource "aws_acm_certificate_validation" "validation_www" {
-  certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [for record in aws_route53_record.my_record : record.fqdn]
-}
-
-
-
-resource "aws_route53_record" "www_elb" {
-  zone_id = data.aws_route53_zone.my_zone.id
-  name    = "www"
-  type    = "A"
-
-  alias {
-    name                   = module.alb.lb_dns_name
-    zone_id                = module.alb.lb_zone_id
-    evaluate_target_health = true
+  tags = {
+    Name = "nar3kjan.link"
   }
 }
 
-resource "aws_route53_record" "elb" {
-  zone_id = data.aws_route53_zone.my_zone.id
-  name    = "nar3kjan.link"
-  type    = "A"
 
-  alias {
-    name                   = module.alb.lb_dns_name
-    zone_id                = module.alb.lb_zone_id
-    evaluate_target_health = true
-  }
+module "records" {
+  source  = "terraform-aws-modules/route53/aws//modules/records"
+  version = "~> 2.0"
+
+  zone_name = data.aws_route53_zone.my_zone.id
+
+  records = [
+    {
+      name    = "nar3kjan.link"
+      type    = "A"
+      alias   = {
+        name    = module.alb.lb_dns_name
+        zone_id = module.alb.lb_zone_id
+      }
+    },
+    {
+      name    = ""
+      type    = "A"
+      ttl     = 3600
+      records = [
+        "10.10.10.10",
+      ]
+    },
+  ]
 }
-
