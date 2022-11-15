@@ -18,7 +18,7 @@ module "asg" {
   desired_capacity          = 2
   health_check_type         = "EC2"
   vpc_zone_identifier       = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
-  target_group_arns = [module.alb.target_group_arns[0], module.alb.target_group_arns[1]]
+
 
   
   # Launch template
