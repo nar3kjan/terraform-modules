@@ -12,21 +12,6 @@ module "alb" {
 
 
 
-  target_groups = [
-    {
-      name_prefix      = "Public"
-      backend_protocol = "HTTP"
-      backend_port     = 80
-      target_type      = "instance"
-      targets = {
-        my_target = {
-          target_id = module.asg.autoscaling_group_arn
-          port = 80
-        }
-      }
-    }
-  ]
-
   https_listeners = [
     {
       port               = 443
