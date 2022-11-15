@@ -1,9 +1,3 @@
-data "aws_route53_zone" "my_zone" {
-  name         = "nar3kjan.link"
-  private_zone = false
-}
-
-
 module "acm" {
   source  = "terraform-aws-modules/acm/aws"
   version = "~> 4.0"
@@ -23,12 +17,34 @@ module "acm" {
   }
 }
 
+module "zones" {
+  source  = "terraform-aws-modules/route53/aws//modules/zones"
+  version = "~> 2.0"
+
+  zones = {
+    "nar3kjan.link" = {
+      comment = "nar3kjan.link (production)"
+      tags = {
+        env = "production"
+      }
+    }
+
+    "myapp.com" = {
+      comment = "myapp.com"
+    }
+  }
+
+  tags = {
+    ManagedBy = "Terraform"
+  }
+}
+
 
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
 
-  zone_name = data.aws_route53_zone.my_zone.id
+  zone_name = keys(module.zones.route53_zone_zone_id)[0]
 
   records = [
     {
@@ -40,7 +56,7 @@ module "records" {
       }
     },
     {
-      name    = ""
+      name    = "www"
       type    = "A"
       ttl     = 3600
       records = [
